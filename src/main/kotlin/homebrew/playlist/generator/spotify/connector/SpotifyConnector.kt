@@ -16,7 +16,8 @@ import java.util.*
 class SpotifyConnector : ResourceConnector {
 
     override fun connect() {
-        val api = Api.builder().clientId(SpotifyStatics.CLIENT_ID).clientSecret(SpotifyStatics.CLIENT_SECRET).build()
+        val api = Api.builder().clientId(SpotifyStatics.CLIENT_ID).clientSecret(SpotifyStatics.CLIENT_SECRET).
+                redirectURI(SpotifyStatics.host).build()
         val request = api.clientCredentialsGrant().build()
         SpotifyStatics.token = request.get().accessToken
         SpotifyStatics.api = api
@@ -46,13 +47,11 @@ class SpotifyConnector : ResourceConnector {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun makeAuthorizationURL(api: Api):String {
+    fun makeAuthorizationURL(api: Api):String {
         /* Set the necessary scopes that the application will need from the user */
         val scopes = Arrays.asList("user-read-private", "user-read-email")
-
         /* Set a state. This is used to prevent cross site request forgeries. */
         val state = "someExpectedStateString"
-
         return api.createAuthorizeURL(scopes,state)
     }
 }
