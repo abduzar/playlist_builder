@@ -5,6 +5,8 @@ import com.google.common.util.concurrent.Futures
 import com.wrapper.spotify.Api
 import com.wrapper.spotify.models.ClientCredentials
 import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics
+import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics.api
+import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics.callbackURL
 import interfaces.ResourceConnector
 import statics.GlobalValues.log
 import java.util.*
@@ -47,11 +49,20 @@ class SpotifyConnector : ResourceConnector {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun makeAuthorizationURL(api: Api):String {
+    fun makeAuthorizationURL(api: Api): String {
         /* Set the necessary scopes that the application will need from the user */
         val scopes = Arrays.asList("user-read-private", "user-read-email")
         /* Set a state. This is used to prevent cross site request forgeries. */
         val state = "someExpectedStateString"
-        return api.createAuthorizeURL(scopes,state)
+        return api.createAuthorizeURL(scopes, state)
+    }
+
+    fun requestToken(code: String): String {
+        val request = api.authorizationCodeGrant(code).grantType("authorization_code").
+                basicAuthorizationHeader(SpotifyStatics.CLIENT_ID, SpotifyStatics.CLIENT_SECRET).
+                redirectUri(callbackURL).build()
+        val token = request.get().accessToken
+        SpotifyStatics.userToken = token
+        return token
     }
 }

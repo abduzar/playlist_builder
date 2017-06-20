@@ -1,6 +1,7 @@
 package homebrew.playlist.generator.controller
 
 import homebrew.playlist.generator.spotify.connector.SpotifyConnector
+import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics
 import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics.api
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam
  */
 @Controller
 class PageController {
+    val connector = SpotifyConnector()
 
     @RequestMapping(value = "/")
     fun mainPage():String{
@@ -20,14 +22,17 @@ class PageController {
 
     @RequestMapping(value = "/login", method = arrayOf(RequestMethod.GET))
     fun spotifyLogin(): String {
-        val connector = SpotifyConnector()
         connector.connect()
         return "redirect:${connector.makeAuthorizationURL(api)}"
     }
 
     @RequestMapping(value = "/callback", method = arrayOf(RequestMethod.GET))
     fun spotifyLoginCallback(@RequestParam("code") code: String): String {
-        val authRequest = api.authorizationCodeGrant(code).build()
+        SpotifyStatics.callBackCode = code
+        //todo refactor
+        val token = connector.requestToken(code)
+        val currentUserRequest = api.me.accessToken(token).build()
+        SpotifyStatics.loggedInUser = currentUserRequest.get()
         return "redirect:/"
     }
 
