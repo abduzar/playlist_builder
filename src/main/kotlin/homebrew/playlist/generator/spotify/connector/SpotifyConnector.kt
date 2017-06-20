@@ -4,8 +4,8 @@ import com.google.common.util.concurrent.FutureCallback
 import com.google.common.util.concurrent.Futures
 import com.wrapper.spotify.Api
 import com.wrapper.spotify.models.ClientCredentials
-import interfaces.ResourceConnector
 import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics
+import interfaces.ResourceConnector
 import statics.GlobalValues.log
 import java.util.*
 
@@ -17,7 +17,7 @@ class SpotifyConnector : ResourceConnector {
 
     override fun connect() {
         val api = Api.builder().clientId(SpotifyStatics.CLIENT_ID).clientSecret(SpotifyStatics.CLIENT_SECRET).
-                redirectURI(SpotifyStatics.host).build()
+                redirectURI(SpotifyStatics.callbackURL).build()
         val request = api.clientCredentialsGrant().build()
         SpotifyStatics.token = request.get().accessToken
         SpotifyStatics.api = api
