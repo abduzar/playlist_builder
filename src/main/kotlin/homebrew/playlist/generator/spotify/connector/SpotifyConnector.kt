@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.FutureCallback
 import com.google.common.util.concurrent.Futures
 import com.wrapper.spotify.Api
 import com.wrapper.spotify.models.ClientCredentials
+import com.wrapper.spotify.models.User
 import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics
 import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics.api
 import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics.callbackURL
@@ -57,7 +58,15 @@ class SpotifyConnector : ResourceConnector {
         return api.createAuthorizeURL(scopes, state)
     }
 
-    fun requestToken(code: String): String {
+
+    fun getUser(code: String): User {
+        SpotifyStatics.userToken = requestToken(code)
+        val currentUserRequest = api.me.accessToken(SpotifyStatics.userToken).build()
+        SpotifyStatics.loggedInUser = currentUserRequest.get()
+        return SpotifyStatics.loggedInUser
+    }
+
+    private fun requestToken(code: String): String {
         val request = api.authorizationCodeGrant(code).grantType("authorization_code").
                 basicAuthorizationHeader(SpotifyStatics.CLIENT_ID, SpotifyStatics.CLIENT_SECRET).
                 redirectUri(callbackURL).build()

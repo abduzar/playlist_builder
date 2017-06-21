@@ -29,10 +29,7 @@ class PageController {
     @RequestMapping(value = "/callback", method = arrayOf(RequestMethod.GET))
     fun spotifyLoginCallback(@RequestParam("code") code: String): String {
         SpotifyStatics.callBackCode = code
-        //todo refactor
-        val token = connector.requestToken(code)
-        val currentUserRequest = api.me.accessToken(token).build()
-        SpotifyStatics.loggedInUser = currentUserRequest.get()
+        val user = connector.getUser(code)
         return "redirect:/"
     }
 
