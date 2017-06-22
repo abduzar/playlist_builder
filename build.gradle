@@ -1,16 +1,16 @@
 buildscript {
-	ext {
-		kotlinVersion = '1.1.2-5'
-		springBootVersion = '1.5.4.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
-		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
-	}
+    ext {
+        kotlinVersion = '1.1.2-5'
+        springBootVersion = '1.5.4.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+    }
 }
 
 apply plugin: 'kotlin'
@@ -21,34 +21,41 @@ apply plugin: 'org.springframework.boot'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 compileKotlin {
-	kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "1.8"
 }
 compileTestKotlin {
-	kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "1.8"
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
+}
+
+
+
+
+task herokuDeploy(type: Exec) {
+    executable "sh"
+    args "-c", "echo 'git push heroku master'"
 }
 
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-	compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
-	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
-	runtime('org.postgresql:postgresql')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+    compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
+    compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+    runtime('org.postgresql:postgresql')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
     // https://mvnrepository.com/artifact/net.sourceforge.nekohtml/nekohtml
     compile group: 'net.sourceforge.nekohtml', name: 'nekohtml', version: '1.9.22'
 
+    //web api wrapper
+    // https://mvnrepository.com/artifact/se.michaelthelin.spotify/spotify-web-api-java
+    compile group: 'se.michaelthelin.spotify', name: 'spotify-web-api-java', version: '1.5.0'
 
-	//web api wrapper
-	// https://mvnrepository.com/artifact/se.michaelthelin.spotify/spotify-web-api-java
-	compile group: 'se.michaelthelin.spotify', name: 'spotify-web-api-java', version: '1.5.0'
-
-	//logger
-	// https://mvnrepository.com/artifact/io.github.microutils/kotlin-logging
-	compile group: 'io.github.microutils', name: 'kotlin-logging', version: '1.4.3'
+    //logger
+    // https://mvnrepository.com/artifact/io.github.microutils/kotlin-logging
+    compile group: 'io.github.microutils', name: 'kotlin-logging', version: '1.4.3'
 //	// https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
 //	compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
 }
