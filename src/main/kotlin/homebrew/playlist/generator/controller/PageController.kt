@@ -4,7 +4,9 @@ import homebrew.playlist.generator.spotify.connector.SpotifyConnector
 import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics
 import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics.api
 import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics.loggedInUser
+import homebrew.playlist.generator.spotify.utils.getPlaylistByID
 import homebrew.playlist.generator.spotify.utils.getPlaylistID
+import homebrew.playlist.generator.spotify.utils.getPlaylistTracksByID
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.PathVariable
@@ -47,9 +49,13 @@ class PageController {
         return "user_details"
     }
 
-    @RequestMapping(value = "/playlist/{id}")
-    fun playlistTracks(@PathVariable playlistID: String, modelMap: ModelMap) {
-
+    @RequestMapping(value = "/playlist/{id}", method = arrayOf(RequestMethod.GET))
+    fun playlistTracks(@PathVariable id: String, modelMap: ModelMap): String {
+        val playlist = getPlaylistByID(id)
+        val tracks = getPlaylistTracksByID(id)
+        modelMap.put("tracks", tracks)
+        modelMap.put("playlist", playlist)
+        return "playlist_details"
     }
 
 }
