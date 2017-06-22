@@ -31,12 +31,9 @@ repositories {
     mavenCentral()
 }
 
-
-
-
 task herokuDeploy(type: Exec) {
     executable "sh"
-    args "-c", "echo 'git push heroku master'"
+    args "-c", "git push heroku master"
 }
 
 
