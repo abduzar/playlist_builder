@@ -4,6 +4,7 @@ import homebrew.playlist.generator.spotify.connector.SpotifyConnector
 import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics
 import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics.api
 import org.springframework.stereotype.Controller
+import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
@@ -29,13 +30,16 @@ class PageController {
     @RequestMapping(value = "/callback", method = arrayOf(RequestMethod.GET))
     fun spotifyLoginCallback(@RequestParam("code") code: String): String {
         SpotifyStatics.callBackCode = code
-        val user = connector.getUser(code)
-        return "redirect:/"
+        connector.getUser(code)
+        return "redirect:/user"
     }
 
-    @RequestMapping(value = "/about_us")
-    fun comingSoon(): String {
-        return "about_us"
+    @RequestMapping(value = "/user")
+    fun comingSoon(modelMap: ModelMap): String {
+        modelMap.put("user", SpotifyStatics.loggedInUser)
+        val playlists = api.getPlaylistsForUser(SpotifyStatics.loggedInUser.id).build()
+        modelMap.put("playlists", playlists.get().items)
+        return "user_details"
     }
 
 }
