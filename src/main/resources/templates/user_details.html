@@ -9,8 +9,10 @@
 <h1 th:text="${user.country}"></h1>
 <h1 th:text="${user.email}"></h1>
 <img th:src="${user.images[0].url}" alt="qqqq">
-<ul th:each="item : ${playlists}">
-    <li th:text="${item.name}" th:href="${item.tracks.href}"></li>
+<ul th:each="item : ${map}">
+    <li>
+        <a th:href="@{'/playlist/'+${item.second}}" th:text="${item.first}"></a>
+    </li>
 </ul>
 </div>
 </body>
