@@ -3,6 +3,7 @@ package homebrew.playlist.generator.controller
 import homebrew.playlist.generator.spotify.connector.SpotifyConnector
 import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics
 import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics.api
+import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics.loggedInUser
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.RequestMapping
@@ -36,9 +37,10 @@ class PageController {
 
     @RequestMapping(value = "/user")
     fun comingSoon(modelMap: ModelMap): String {
-        modelMap.put("user", SpotifyStatics.loggedInUser)
-        val playlists = api.getPlaylistsForUser(SpotifyStatics.loggedInUser.id).build()
+        modelMap.put("user", loggedInUser)
+        val playlists = api.getPlaylistsForUser(loggedInUser.id).build()
         modelMap.put("playlists", playlists.get().items)
+//        api.getPlaylistTracks()
         return "user_details"
     }
 
