@@ -55,8 +55,8 @@ class PageController {
 
     @RequestMapping(value = "/playlist/{user}/{id}", method = arrayOf(RequestMethod.GET))
     fun playlistTracks(@PathVariable user: String, @PathVariable id: String, modelMap: ModelMap): String {
-        val playlist = getPlaylistByID(id)
-        val tracks = getPlaylistTracksByID(id)
+        val playlist = getPlaylistByID(id = id, userID = user)
+        val tracks = getPlaylistTracksByID(id = id, userID = user)
         modelMap.put("tracks", tracks)
         modelMap.put("playlist", playlist)
         return "playlist_details"

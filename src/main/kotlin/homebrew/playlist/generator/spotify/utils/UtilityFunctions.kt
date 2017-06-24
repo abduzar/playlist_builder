@@ -9,13 +9,13 @@ import org.intellij.lang.annotations.Language
 /**
  * Created by sargisazaryan on 6/15/17.
  */
-fun getPlaylistTracksByID(id: String): MutableList<PlaylistTrack>? {
-    val request = api.getPlaylistTracks(SpotifyStatics.loggedInUser.id, id).build()
+fun getPlaylistTracksByID(id: String, userID: String = SpotifyStatics.loggedInUser.id): MutableList<PlaylistTrack>? {
+    val request = api.getPlaylistTracks(userID, id).build()
     return request.get().items
 }
 
-fun getPlaylistByID(id: String): Playlist {
-    val request = api.getPlaylist(SpotifyStatics.loggedInUser.id, id).build()
+fun getPlaylistByID(id: String, userID: String = SpotifyStatics.loggedInUser.id): Playlist {
+    val request = api.getPlaylist(userID, id).build()
     return request.get()
 }
 
