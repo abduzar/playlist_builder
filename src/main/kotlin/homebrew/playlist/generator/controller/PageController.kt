@@ -7,6 +7,7 @@ import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics.logg
 import homebrew.playlist.generator.spotify.utils.getPlaylistByID
 import homebrew.playlist.generator.spotify.utils.getPlaylistID
 import homebrew.playlist.generator.spotify.utils.getPlaylistTracksByID
+import homebrew.playlist.generator.spotify.utils.getUserFromURL
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.PathVariable
@@ -43,14 +44,17 @@ class PageController {
     fun userDetails(modelMap: ModelMap): String {
         modelMap.put("user", loggedInUser)
         val playlists = api.getPlaylistsForUser(loggedInUser.id).build()
-        val map = mutableMapOf<String, String>()
-        playlists.get().items.forEach { map.put(it.name, getPlaylistID(it.href)!!) }
-        modelMap.put("map", map.toList())
+        val items = playlists.get().items
+        val map = mutableListOf<Triple<String, String, String>>()
+        items.forEach {
+            map.add(Triple(first = it.name, second = getUserFromURL(it.href)!!, third = getPlaylistID(it.href)!!))
+        }
+        modelMap.put("map", map)
         return "user_details"
     }
 
-    @RequestMapping(value = "/playlist/{id}", method = arrayOf(RequestMethod.GET))
-    fun playlistTracks(@PathVariable id: String, modelMap: ModelMap): String {
+    @RequestMapping(value = "/playlist/{user}/{id}", method = arrayOf(RequestMethod.GET))
+    fun playlistTracks(@PathVariable user: String, @PathVariable id: String, modelMap: ModelMap): String {
         val playlist = getPlaylistByID(id)
         val tracks = getPlaylistTracksByID(id)
         modelMap.put("tracks", tracks)

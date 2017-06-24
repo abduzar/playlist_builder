@@ -11,7 +11,7 @@
 <img th:src="${user.images[0].url}" alt="qqqq">
 <ul th:each="item : ${map}">
     <li>
-        <a th:href="@{'/playlist/'+${item.second}}" th:text="${item.first}"></a>
+        <a th:href="@{'/playlist/'+${item.second}+'/'+${item.third}}" th:text="${item.first}"></a>
     </li>
 </ul>
 </div>

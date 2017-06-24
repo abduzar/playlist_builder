@@ -28,3 +28,9 @@ fun getPlaylistID(url: String): String? {
     val regex = "^.*/playlists/(.*)$".toRegex()
     return regex.matchEntire(url)?.groups?.get(1)?.value
 }
+
+fun getUserFromURL(url: String): String? {
+    @Language("RegExp")
+    val regex = "^.*/users/(.*)/playlists/.*$".toRegex()
+    return regex.matchEntire(url)?.groups?.get(1)?.value
+}
