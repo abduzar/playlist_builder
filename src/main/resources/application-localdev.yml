@@ -1,0 +1,5 @@
+spring:
+  thymeleaf:
+    mode: LEGACYHTML5
+url:
+  callback: https://localhost:8080/callback

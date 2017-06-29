@@ -1,9 +1,9 @@
 package homebrew.playlist.generator.controller
 
 import homebrew.playlist.generator.spotify.connector.SpotifyConnector
-import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics
-import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics.api
-import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics.loggedInUser
+import homebrew.playlist.generator.spotify.statics.SpotifyStatics
+import homebrew.playlist.generator.spotify.statics.SpotifyStatics.api
+import homebrew.playlist.generator.spotify.statics.SpotifyStatics.loggedInUser
 import homebrew.playlist.generator.spotify.utils.getPlaylistByID
 import homebrew.playlist.generator.spotify.utils.getPlaylistID
 import homebrew.playlist.generator.spotify.utils.getPlaylistTracksByID

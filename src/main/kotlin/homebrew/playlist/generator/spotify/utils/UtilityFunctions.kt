@@ -2,8 +2,8 @@ package homebrew.playlist.generator.spotify.utils
 
 import com.wrapper.spotify.models.Playlist
 import com.wrapper.spotify.models.PlaylistTrack
-import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics
-import homebrew.playlist.generator.spotify.connector.statics.SpotifyStatics.api
+import homebrew.playlist.generator.spotify.statics.SpotifyStatics
+import homebrew.playlist.generator.spotify.statics.SpotifyStatics.api
 import org.intellij.lang.annotations.Language
 
 /**
