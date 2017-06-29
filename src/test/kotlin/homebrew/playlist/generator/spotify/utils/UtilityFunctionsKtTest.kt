@@ -2,7 +2,7 @@ package homebrew.playlist.generator.spotify.utils
 
 import org.hamcrest.core.Is
 import org.junit.Assert.assertThat
-import org.junit.jupiter.api.Test
+import org.junit.Test
 
 
 /**

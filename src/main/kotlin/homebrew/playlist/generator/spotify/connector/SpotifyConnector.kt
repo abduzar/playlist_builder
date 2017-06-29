@@ -5,10 +5,12 @@ import com.google.common.util.concurrent.Futures
 import com.wrapper.spotify.Api
 import com.wrapper.spotify.models.ClientCredentials
 import com.wrapper.spotify.models.User
+import homebrew.playlist.generator.configuration.ConfigurationProvider
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics.api
-import homebrew.playlist.generator.spotify.statics.SpotifyStatics.callBack
 import interfaces.ResourceConnector
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Configuration
 import statics.GlobalValues.log
 import java.util.*
 
@@ -16,11 +18,14 @@ import java.util.*
 /**
  * Created by sargisazaryan on 6/9/17.
  */
+@Configuration
 class SpotifyConnector : ResourceConnector {
 
+    @Autowired lateinit var config: ConfigurationProvider
+
     override fun connect() {
-        val api = Api.builder().clientId(SpotifyStatics.CLIENT_ID).clientSecret(SpotifyStatics.CLIENT_SECRET).
-                redirectURI(callBack).build()
+        val api = Api.builder().clientId(config.getConfig().clientID).clientSecret(config.getConfig().clientSecret).
+                redirectURI(config.getConfig().callback).build()
         val request = api.clientCredentialsGrant().build()
         SpotifyStatics.token = request.get().accessToken
         SpotifyStatics.api = api
@@ -68,8 +73,8 @@ class SpotifyConnector : ResourceConnector {
 
     private fun requestToken(code: String): String {
         val request = api.authorizationCodeGrant(code).grantType("authorization_code").
-                basicAuthorizationHeader(SpotifyStatics.CLIENT_ID, SpotifyStatics.CLIENT_SECRET).
-                redirectUri(callBack).build()
+                basicAuthorizationHeader(config.getConfig().clientID, config.getConfig().clientSecret).
+                redirectUri(config.getConfig().callback).build()
         val token = request.get().accessToken
         SpotifyStatics.userToken = token
         return token
