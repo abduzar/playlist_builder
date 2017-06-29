@@ -2,7 +2,7 @@ spring:
   thymeleaf:
     mode: LEGACYHTML5
 url:
-  callback: https://localhost:8080/callback
+  callback: http://localhost:8080/callback
 
 app:
   client:

@@ -11,10 +11,10 @@ class LocalDevConfiguration : Config {
     @Value(value = "\${url.callback}") override
     lateinit var callback: String
 
-    @Value(value = "\${app.client.id") override
+    @Value(value = "\${app.client.id}") override
     lateinit var clientID: String
 
-    @Value(value = "\${app.client.secret") override
+    @Value(value = "\${app.client.secret}") override
     lateinit var clientSecret: String
 
 }
