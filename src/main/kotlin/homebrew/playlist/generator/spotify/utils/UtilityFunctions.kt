@@ -2,19 +2,19 @@ package homebrew.playlist.generator.spotify.utils
 
 import com.wrapper.spotify.models.Playlist
 import com.wrapper.spotify.models.PlaylistTrack
-import homebrew.playlist.generator.spotify.statics.SpotifyStatics
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics.api
 import org.intellij.lang.annotations.Language
+import homebrew.playlist.generator.spotify.statics.SpotifyStatics.loggedInUser as user
 
 /**
  * Created by sargisazaryan on 6/15/17.
  */
-fun getPlaylistTracksByID(id: String, userID: String = SpotifyStatics.loggedInUser.id): MutableList<PlaylistTrack>? {
+fun getPlaylistTracksByID(id: String, userID: String = user.id): MutableList<PlaylistTrack>? {
     val request = api.getPlaylistTracks(userID, id).build()
     return request.get().items
 }
 
-fun getPlaylistByID(id: String, userID: String = SpotifyStatics.loggedInUser.id): Playlist {
+fun getPlaylistByID(id: String, userID: String = user.id): Playlist {
     val request = api.getPlaylist(userID, id).build()
     return request.get()
 }
