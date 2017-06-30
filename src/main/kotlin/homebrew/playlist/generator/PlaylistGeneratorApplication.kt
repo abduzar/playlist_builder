@@ -14,10 +14,3 @@ fun main(args: Array<String>) {
     val config = context.getBean(ConfigurationProvider::class.java)
     SpotifyStatics.config = config.getConfig()
 }
-
-
-//val context:ApplicationContext = SpringApplication.run(PlaylistGeneratorApplication::class.java, *args)
-//var configFactory : ConfigurationFactory = context.getBean(ConfigurationFactory::class.java)
-//SpotifyStatics.calllBack = configFactory.currentCallback()
-//
-//println(SpotifyStatics.calllBack)
