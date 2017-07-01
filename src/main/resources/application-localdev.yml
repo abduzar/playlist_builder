@@ -1,6 +1,15 @@
 spring:
   thymeleaf:
     mode: LEGACYHTML5
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/postgres
+    password:
+
+
 url:
   callback: http://localhost:8080/callback
 

@@ -1,6 +1,13 @@
 spring:
   thymeleaf:
-    mode: LEGACYHTML5
+    mode:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: jdbc:postgres://drzwvebrbarwhl:075fab42800887cd863f50d03bb5baf5fa388f9937a2570494d70efd1389ac11@ec2-50-19-218-160.compute-1.amazonaws.com:5432/db5iuctlt9kbim
+
+
 url:
   callback: https://spotifygen.herokuapp.com/callback
 

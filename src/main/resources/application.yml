@@ -3,3 +3,5 @@ spring:
     mode: LEGACYHTML5
   profiles:
     active: localdev
+  datasource:
+    driver-class-name: org.postgresql.Driver
