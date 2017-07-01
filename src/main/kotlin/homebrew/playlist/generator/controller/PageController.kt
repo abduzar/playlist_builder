@@ -1,5 +1,6 @@
 package homebrew.playlist.generator.controller
 
+import homebrew.playlist.generator.service.UserDataService
 import homebrew.playlist.generator.spotify.connector.SpotifyConnector
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics.api
@@ -8,6 +9,7 @@ import homebrew.playlist.generator.spotify.utils.getPlaylistByID
 import homebrew.playlist.generator.spotify.utils.getPlaylistID
 import homebrew.playlist.generator.spotify.utils.getPlaylistTracksByID
 import homebrew.playlist.generator.spotify.utils.getUserFromURL
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
 import org.springframework.web.bind.annotation.PathVariable
@@ -21,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam
 @Controller
 class PageController {
     val connector = SpotifyConnector()
+
+    @Autowired
+    lateinit var service: UserDataService
 
     @RequestMapping(value = "/")
     fun mainPage(): String {
@@ -36,7 +41,7 @@ class PageController {
     @RequestMapping(value = "/callback", method = arrayOf(RequestMethod.GET))
     fun spotifyLoginCallback(@RequestParam("code") code: String): String {
         SpotifyStatics.callBackCode = code
-        connector.getUser(code)
+        connector.getUser(code, service)
         return "redirect:/user"
     }
 

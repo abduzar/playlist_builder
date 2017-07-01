@@ -11,11 +11,10 @@ import javax.persistence.Id
  * Created by sargisazaryan on 7/1/17.
  */
 @Entity
-class UserEntity {
+class UserEntity(var userObject: User) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    lateinit var userDatabaseID: String
-    lateinit var userObject: User
+    var userDatabaseID: Long = 0
 
     val userID: String
         get() = userObject.id
