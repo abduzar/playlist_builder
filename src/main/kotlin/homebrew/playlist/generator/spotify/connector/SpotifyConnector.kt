@@ -6,7 +6,6 @@ import com.wrapper.spotify.Api
 import com.wrapper.spotify.models.ClientCredentials
 import com.wrapper.spotify.models.User
 import homebrew.playlist.generator.service.UserDataService
-import homebrew.playlist.generator.spotify.domain.UserEntity
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics.api
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics.config
@@ -64,8 +63,6 @@ class SpotifyConnector : ResourceConnector {
     fun getUser(code: String, service: UserDataService): User {
         SpotifyStatics.userToken = requestToken(code)
         val currentUserRequest = api.me.accessToken(SpotifyStatics.userToken).build()
-        val entity = UserEntity(userObject = currentUserRequest.get())
-        service.saveOrUpdate(entity)
         SpotifyStatics.loggedInUser = currentUserRequest.get()
         return SpotifyStatics.loggedInUser
     }

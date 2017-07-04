@@ -22,10 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam
  */
 @Controller
 class PageController {
-    val connector = SpotifyConnector()
 
     @Autowired
     lateinit var service: UserDataService
+
+    val connector = SpotifyConnector()
 
     @RequestMapping(value = "/")
     fun mainPage(): String {

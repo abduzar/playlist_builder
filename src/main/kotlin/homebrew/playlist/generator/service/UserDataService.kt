@@ -15,18 +15,7 @@ class UserDataService : DataService<UserEntity> {
     lateinit var userRepo: UserRepo
 
     override fun saveOrUpdate(entity: UserEntity): UserEntity {
-        val search = userRepo.findAll().filter { it.userDatabaseID == entity.userDatabaseID }
-        when {
-            search.isEmpty() -> {
-                return userRepo.save(entity)
-            }
-            search.size == 1 -> {
-                return userUpdate(entity)
-            }
-            else -> {
-                throw IllegalArgumentException("Something goes wrong on user update")
-            }
-        }
+        return userRepo.save(entity)
     }
 
     override fun delete(id: Long) {
