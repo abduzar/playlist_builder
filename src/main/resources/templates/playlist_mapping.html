@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title text="Playlist mapping"></title>
+</head>
+<body>
+<form action="/mapping">
+    <select name="HR1" id="zone1">
+        <span>Heart Rate Zone 1</span>
+        <option th:each="item : ${list}" th:text="${item.name}" th:value="${item.id}"></option>
+    </select>
+    <select name="HR2" id="zone2">
+        <span>Heart Rate Zone 2</span>
+        <option th:each="item : ${list}" th:text="${item.name}" th:value="${item.id}"></option>
+    </select>
+    <select name="HR3" id="zone3">
+        <span>Heart Rate Zone 3</span>
+        <option th:each="item : ${list}" th:text="${item.name}" th:value="${item.id}"></option>
+    </select>
+    <select name="HR4" id="zone4">
+        <span>Heart Rate Zone 4</span>
+        <option th:each="item : ${list}" th:text="${item.name}" th:value="${item.id}"></option>
+    </select>
+    <select name="HR5" id="zone5">
+        <span>Heart Rate Zone 5</span>
+        <option th:each="item : ${list}" th:text="${item.name}" th:value="${item.id}"></option>
+    </select>
+    <input type="submit" value="Submit Mapping">
+</form>
+</body>
+</html>

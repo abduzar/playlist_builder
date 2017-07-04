@@ -1,5 +1,6 @@
 package homebrew.playlist.generator.controller
 
+import com.wrapper.spotify.models.SimplePlaylist
 import homebrew.playlist.generator.service.UserDataService
 import homebrew.playlist.generator.spotify.connector.SpotifyConnector
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam
  */
 @Controller
 class PageController {
+    lateinit var userPlaylists: List<SimplePlaylist>
 
     @Autowired
     lateinit var service: UserDataService
@@ -51,12 +53,20 @@ class PageController {
         modelMap.put("user", loggedInUser)
         val playlists = api.getPlaylistsForUser(loggedInUser.id).build()
         val items = playlists.get().items
+        this.userPlaylists = items
         val map = mutableListOf<Triple<String, String, String>>()
         items.forEach {
             map.add(Triple(first = it.name, second = getUserFromURL(it.href)!!, third = getPlaylistID(it.href)!!))
         }
         modelMap.put("map", map)
         return "user_details"
+    }
+
+    @RequestMapping(value = "/playlist_mapping")
+    fun playlistMappingDefinition(modelMap: ModelMap): String {
+        modelMap.put("list", userPlaylists)
+        userPlaylists[0].id
+        return "playlist_mapping"
     }
 
     @RequestMapping(value = "/playlist/{user}/{id}", method = arrayOf(RequestMethod.GET))
