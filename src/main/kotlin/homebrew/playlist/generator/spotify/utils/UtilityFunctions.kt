@@ -51,6 +51,10 @@ fun createNewPlayList(userID: String, playlistTitle: String, tracks: List<Track>
     api.addTracksToPlaylist(userID, playlist.id, uriList)
 }
 
+fun getIntegersFromString(string: String): List<Int> {
+    return string.split(Regex("[^-\\d]+")).filter(String::isNotBlank).map(String::toInt)
+}
+
 fun <T> List<T>.getRandomItem(): T {
     val random = Random()
     return this[random.nextInt(this.size)]
