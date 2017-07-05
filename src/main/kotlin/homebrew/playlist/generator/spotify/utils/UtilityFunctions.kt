@@ -2,8 +2,10 @@ package homebrew.playlist.generator.spotify.utils
 
 import com.wrapper.spotify.models.Playlist
 import com.wrapper.spotify.models.PlaylistTrack
+import com.wrapper.spotify.models.Track
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics.api
 import org.intellij.lang.annotations.Language
+import java.util.*
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics.loggedInUser as user
 
 /**
@@ -33,4 +35,23 @@ fun getUserFromURL(url: String): String? {
     @Language("RegExp")
     val regex = "^.*/users/(.*)/playlists/.*$".toRegex()
     return regex.matchEntire(url)?.groups?.get(1)?.value
+}
+
+fun getRandomTrackFromPlaylist(userID: String, playlistID: String): Track {
+    val playlist = getPlaylistByID(id = playlistID, userID = userID)
+    val tracks = playlist.tracks.items
+    return tracks.getRandomItem().track
+}
+
+fun createNewPlayList(userID: String, playlistTitle: String, tracks: List<Track>) {
+    val request = api.createPlaylist(userID, playlistTitle).
+            publicAccess(true).build()
+    val playlist = request.get()
+    val uriList = tracks.map { it.uri }
+    api.addTracksToPlaylist(userID, playlist.id, uriList)
+}
+
+fun <T> List<T>.getRandomItem(): T {
+    val random = Random()
+    return this[random.nextInt(this.size)]
 }
