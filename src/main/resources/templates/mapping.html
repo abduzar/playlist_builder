@@ -2,14 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Workout creation</title>
+    <title>Define your interval training</title>
 </head>
 <body>
-<input type="button" value="Define Training" onclick="openURL()">
-</body>
-</html>
-<script type="text/javascript">
-    function openURL() {
-        window.location = "/training_def"
+<div>
+    <div>
+        <input title="" id="interval_count" value="0"/>
+        <button onclick="populateItems()">Define Training</button>
+    </div>
+    <form action="/playlist_gen">
+        <ul id="dynamic_content">
+        </ul>
+        <input name="title" type="text" placeholder="Playlist title" id="title">
+        <input type="submit" value="Generate Playlist">
+    </form>
+</div>
+<script>
+    function populateItems() {
+        var listItem;
+        var select, option;
+        var elementsCount = parseInt(document.getElementById('interval_count').value);
+        var container = document.getElementById('dynamic_content');
+
+        // Clear previous inputs (if any)
+        container.innerHTML = "";
+
+        if (!isNaN(elementsCount) && elementsCount > 0) {
+            for (var i = 0; i < elementsCount; i++) {
+                listItem = document.createElement('li');
+                select = document.createElement('select');
+                select.setAttribute("name", "interval" + i);
+                select.setAttribute("id", "in" + i);
+                for (var j = 0; j < 5; j++) {
+                    option = document.createElement('option');
+                    option.value = 'HR' + (j + 1);
+                    option.text = 'Heart rate zone ' + (j + 1);
+                    select.add(option, j);
+                }
+                listItem.appendChild(select);
+                container.appendChild(listItem);
+            }
+        }
     }
 </script>
+</body>
+</html>

@@ -72,7 +72,7 @@ class PageController {
     }
 
     @RequestMapping(value = "/mapping", method = arrayOf(RequestMethod.GET))
-    fun workoutGen(request: HttpServletRequest): String {
+    fun workoutGen(request: HttpServletRequest, modelMap: ModelMap): String {
         val result = request.parameterMap
         val mappingList = mutableListOf<PlaylistMapping>()
         result.forEach { zoneID, playlistIDArray ->
@@ -84,6 +84,7 @@ class PageController {
             }
         }
         SpotifyStatics.zoneMapping = mappingList
+        modelMap.put("mapping", SpotifyStatics.zoneMapping)
         return "mapping"
     }
 
