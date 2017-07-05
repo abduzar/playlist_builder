@@ -1,6 +1,6 @@
 spring:
   thymeleaf:
-    mode:
+    mode: LEGACYHTML5
   jpa:
     hibernate:
       ddl-auto: validate

@@ -9,7 +9,7 @@ import javax.persistence.Id
  * Created by sargisazaryan on 7/1/17.
  */
 @Entity
-class UserEntity() {
+class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var userDatabaseID: Long = 0
