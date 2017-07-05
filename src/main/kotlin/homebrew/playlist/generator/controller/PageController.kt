@@ -92,6 +92,7 @@ class PageController {
         val result = request.parameterMap
         val playlistTitle = result.filter { it.key == "title" }.values.toTypedArray()[0][0]
         val tracksList: MutableList<Track> = mutableListOf()
+        val workout = result.filter { it.key != "title" }
         result.forEach { intervalIndex, arrayOfZoneMapping ->
             run {
                 val index = getIntegersFromString(intervalIndex)[0]
