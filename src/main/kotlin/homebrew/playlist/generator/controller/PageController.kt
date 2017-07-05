@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
+import javax.servlet.http.HttpServletRequest
 
 /**
  * Created by sargisazaryan on 3/15/17.
@@ -67,6 +68,16 @@ class PageController {
         modelMap.put("list", userPlaylists)
         userPlaylists[0].id
         return "playlist_mapping"
+    }
+
+    @RequestMapping(value = "/mapping", method = arrayOf(RequestMethod.GET))
+    fun workoutGen(request: HttpServletRequest): String {
+        val playlistMap = HashMap<String, String>()
+        request.parameterMap.forEach {
+            playlistMap.put(it.key, it.value[0])
+        }
+        SpotifyStatics.zoneMapping = playlistMap
+        return "mapping"
     }
 
     @RequestMapping(value = "/playlist/{user}/{id}", method = arrayOf(RequestMethod.GET))

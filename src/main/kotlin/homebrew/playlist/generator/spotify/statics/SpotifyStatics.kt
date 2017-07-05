@@ -14,4 +14,5 @@ object SpotifyStatics {
     lateinit var userToken: String
     lateinit var loggedInUser: User
     lateinit var api: Api
+    lateinit var zoneMapping: HashMap<String, String>
 }
