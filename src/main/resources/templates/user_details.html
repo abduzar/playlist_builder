@@ -6,6 +6,7 @@
 </head>
 <body>
 <h1 th:text="${user.displayName}"></h1>
+<input type="button" value="Create Mapping" onclick="openURL()">
 <h1 th:text="${user.country}"></h1>
 <h1 th:text="${user.email}"></h1>
 <img th:src="${user.images[0].url}" alt="qqqq">
@@ -14,7 +15,6 @@
         <a th:href="@{'/playlist/'+${item.second}+'/'+${item.third}}" th:text="${item.first}"></a>
     </li>
 </ul>
-<input type="button" value="Create Mapping" onclick="openURL()">
 </div>
 </body>
 <script type="text/javascript">
