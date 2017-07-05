@@ -3,6 +3,7 @@ package homebrew.playlist.generator.controller
 import com.wrapper.spotify.models.SimplePlaylist
 import homebrew.playlist.generator.service.UserDataService
 import homebrew.playlist.generator.spotify.connector.SpotifyConnector
+import homebrew.playlist.generator.spotify.domain.PlaylistMapping
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics.api
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics.loggedInUser
@@ -72,11 +73,16 @@ class PageController {
 
     @RequestMapping(value = "/mapping", method = arrayOf(RequestMethod.GET))
     fun workoutGen(request: HttpServletRequest): String {
-        val playlistMap = HashMap<String, String>()
-        request.parameterMap.forEach {
-            playlistMap.put(it.key, it.value[0])
+        val result = request.parameterMap
+        val mappingList = mutableListOf<PlaylistMapping>()
+        result.forEach { zoneID, playlistIDArray ->
+            run {
+                val playlistHref = userPlaylists.filter { it.id == playlistIDArray[0] }[0].href
+                val tempMapping = PlaylistMapping(hrZone = zoneID, playlistID = playlistIDArray[0],
+                        playlistOwnerID = getUserFromURL(playlistHref)!!)
+                mappingList.add(tempMapping)
+            }
         }
-        SpotifyStatics.zoneMapping = playlistMap
         return "mapping"
     }
 
