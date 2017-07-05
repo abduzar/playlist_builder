@@ -88,6 +88,14 @@ class PageController {
         return "mapping"
     }
 
+
+    @RequestMapping(value = "/playlist_gen", method = arrayOf(RequestMethod.GET))
+    fun playlistGeneration(request: HttpServletRequest): String {
+        val result = request.parameterMap
+        val playlistTitle = result.filter { it.key == "title" }.values.toTypedArray()[0][0]
+        return "redirect:/user"
+    }
+
     @RequestMapping(value = "/playlist/{user}/{id}", method = arrayOf(RequestMethod.GET))
     fun playlistTracks(@PathVariable user: String, @PathVariable id: String, modelMap: ModelMap): String {
         val playlist = getPlaylistByID(id = id, userID = user)

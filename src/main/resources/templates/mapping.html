@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <title>Define your interval training</title>
 </head>
-<body>
+<body onload="populateItems()">
 <div>
     <div>
-        <input title="" id="interval_count" value="0"/>
+        <input title="" id="interval_count" value="5"/>
         <button onclick="populateItems()">Define Training</button>
     </div>
     <form action="/playlist_gen">
