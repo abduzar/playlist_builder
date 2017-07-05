@@ -1,16 +1,14 @@
 package homebrew.playlist.generator.controller
 
 import com.wrapper.spotify.models.SimplePlaylist
+import com.wrapper.spotify.models.Track
 import homebrew.playlist.generator.service.UserDataService
 import homebrew.playlist.generator.spotify.connector.SpotifyConnector
 import homebrew.playlist.generator.spotify.domain.PlaylistMapping
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics.api
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics.loggedInUser
-import homebrew.playlist.generator.spotify.utils.getPlaylistByID
-import homebrew.playlist.generator.spotify.utils.getPlaylistID
-import homebrew.playlist.generator.spotify.utils.getPlaylistTracksByID
-import homebrew.playlist.generator.spotify.utils.getUserFromURL
+import homebrew.playlist.generator.spotify.utils.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.ModelMap
@@ -93,6 +91,16 @@ class PageController {
     fun playlistGeneration(request: HttpServletRequest): String {
         val result = request.parameterMap
         val playlistTitle = result.filter { it.key == "title" }.values.toTypedArray()[0][0]
+        val tracksList: MutableList<Track> = mutableListOf()
+        result.forEach { intervalIndex, arrayOfZoneMapping ->
+            run {
+                val index = getIntegersFromString(intervalIndex)[0]
+                val mapping = SpotifyStatics.zoneMapping.filter { it.hrZone == arrayOfZoneMapping[0] }[0]
+                tracksList.add(index,
+                        getRandomTrackFromPlaylist(userID = mapping.playlistOwnerID, playlistID = mapping.playlistID))
+            }
+        }
+        createNewPlayList(userID = loggedInUser.id, playlistTitle = playlistTitle, tracks = tracksList)
         return "redirect:/user"
     }
 
