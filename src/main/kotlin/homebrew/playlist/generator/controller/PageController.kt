@@ -83,6 +83,7 @@ class PageController {
                 mappingList.add(tempMapping)
             }
         }
+        SpotifyStatics.zoneMapping = mappingList
         return "mapping"
     }
 
