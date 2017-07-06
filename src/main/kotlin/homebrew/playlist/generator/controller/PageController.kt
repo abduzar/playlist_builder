@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
+import statics.GlobalValues
 import javax.servlet.http.HttpServletRequest
 
 /**
@@ -93,12 +94,16 @@ class PageController {
         val playlistTitle = result.filter { it.key == "title" }.values.toTypedArray()[0][0]
         val tracksList: MutableList<Track> = mutableListOf()
         val workout = result.filter { it.key != "title" }
-        result.forEach { intervalIndex, arrayOfZoneMapping ->
+        workout.forEach { intervalIndex, arrayOfZoneMapping ->
             run {
                 val index = getIntegersFromString(intervalIndex)[0]
+                GlobalValues.log.debug { "Index is $index" }
                 val mapping = SpotifyStatics.zoneMapping.filter { it.hrZone == arrayOfZoneMapping[0] }[0]
-                tracksList.add(index,
-                        getRandomTrackFromPlaylist(userID = mapping.playlistOwnerID, playlistID = mapping.playlistID))
+                GlobalValues.log.debug { "Playlist mapping is $mapping" }
+                val randomTrack = getRandomTrackFromPlaylist(userID = mapping.playlistOwnerID,
+                        playlistID = mapping.playlistID)
+                GlobalValues.log.debug { "Random track ${randomTrack.name}, ${randomTrack.artists[0].name}" }
+                tracksList.add(index, randomTrack)
             }
         }
         createNewPlayList(userID = loggedInUser.id, playlistTitle = playlistTitle, tracks = tracksList)

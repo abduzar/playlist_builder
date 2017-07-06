@@ -44,6 +44,7 @@ fun getRandomTrackFromPlaylist(userID: String, playlistID: String): Track {
 }
 
 fun createNewPlayList(userID: String, playlistTitle: String, tracks: List<Track>) {
+    //todo something wrong here
     val request = api.createPlaylist(userID, playlistTitle).
             publicAccess(true).build()
     val playlist = request.get()
