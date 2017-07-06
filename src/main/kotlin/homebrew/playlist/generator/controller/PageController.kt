@@ -45,7 +45,7 @@ class PageController {
     @RequestMapping(value = "/callback", method = arrayOf(RequestMethod.GET))
     fun spotifyLoginCallback(@RequestParam("code") code: String): String {
         SpotifyStatics.callBackCode = code
-        connector.getUser(code, service)
+        connector.getUser(code)
         return "redirect:/user"
     }
 

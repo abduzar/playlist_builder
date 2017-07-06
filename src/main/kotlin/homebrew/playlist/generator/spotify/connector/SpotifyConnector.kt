@@ -5,7 +5,6 @@ import com.google.common.util.concurrent.Futures
 import com.wrapper.spotify.Api
 import com.wrapper.spotify.models.ClientCredentials
 import com.wrapper.spotify.models.User
-import homebrew.playlist.generator.service.UserDataService
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics.api
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics.config
@@ -53,14 +52,15 @@ class SpotifyConnector : ResourceConnector {
 
     fun makeAuthorizationURL(api: Api): String {
         /* Set the necessary scopes that the application will need from the user */
-        val scopes = Arrays.asList("user-read-private", "user-read-email")
+        val scopes = Arrays.asList("user-read-private", "user-read-email",
+                "playlist-modify-public", "playlist-modify-private")
         /* Set a state. This is used to prevent cross site request forgeries. */
         val state = "someExpectedStateString"
         return api.createAuthorizeURL(scopes, state)
     }
 
 
-    fun getUser(code: String, service: UserDataService): User {
+    fun getUser(code: String): User {
         SpotifyStatics.userToken = requestToken(code)
         val currentUserRequest = api.me.accessToken(SpotifyStatics.userToken).build()
         SpotifyStatics.loggedInUser = currentUserRequest.get()
