@@ -1,9 +1,13 @@
 package homebrew.playlist.generator.spotify.utils
 
+
+import com.goebl.david.Webb
 import com.wrapper.spotify.models.Playlist
 import com.wrapper.spotify.models.PlaylistTrack
 import com.wrapper.spotify.models.Track
+import homebrew.playlist.generator.spotify.statics.SpotifyStatics
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics.api
+import net.sf.json.JSONObject
 import org.intellij.lang.annotations.Language
 import java.util.*
 import homebrew.playlist.generator.spotify.statics.SpotifyStatics.loggedInUser as user
@@ -44,12 +48,23 @@ fun getRandomTrackFromPlaylist(userID: String, playlistID: String): Track {
 }
 
 fun createNewPlayList(userID: String, playlistTitle: String, tracks: List<Track>) {
-    //todo something wrong here
-    val request = api.createPlaylist(userID, playlistTitle).
-            publicAccess(true).build()
-    val playlist = request.get()
-    val uriList = tracks.map { it.uri }
-    api.addTracksToPlaylist(userID, playlist.id, uriList)
+    val jsonString = "{\n  \"description\": \"Playlist created with application\",\n  \"public\": false,\n  \"name\": \"$playlistTitle\"\n}"
+    val body: JSONObject = JSONObject.fromObject(jsonString)
+
+    val uriList = tracks.map { "\"${it.uri}\"" }
+    val tracksString = "{\"uris\": [${uriList.joinToString(",")}]}"
+
+    val client = Webb.create()
+    client.setDefaultHeader("Authorization", "Bearer ${SpotifyStatics.userToken}")
+    client.setDefaultHeader("Accept", "application/json")
+
+    val response = client.post("https://api.spotify.com/v1/users/$userID/playlists").body(body).asJsonObject().body
+    val playlistID = response.get("id") as String
+
+
+    client.post("https://api.spotify.com/v1/users/$userID/playlists/$playlistID/tracks").
+            body(tracksString).
+            ensureSuccess().asJsonObject().body
 }
 
 fun getIntegersFromString(string: String): List<Int> {

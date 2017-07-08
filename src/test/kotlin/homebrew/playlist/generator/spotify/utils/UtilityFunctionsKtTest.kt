@@ -21,4 +21,10 @@ internal class UtilityFunctionsKtTest {
         assertThat("Wrong value", getUserFromURL(input), Is.`is`("1150327512"))
     }
 
+    @Test
+    fun playGround() {
+        val list = listOf("1", "3", "5")
+        println(list.map { "\"$it\"" }.joinToString(","))
+    }
+
 }
